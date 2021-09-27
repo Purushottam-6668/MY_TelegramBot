@@ -81,7 +81,7 @@ home_keyboard_pm = InlineKeyboardMarkup(
             ),
             InlineKeyboardButton(
                 text="Repo 🛠",
-                url="https://github.com/thehamkercat/WilliamButcherBot",
+                url="https://github.com/GhangaleSangram/MY_TelegramBot",
             ),
         ],
         [
@@ -90,7 +90,7 @@ home_keyboard_pm = InlineKeyboardMarkup(
                 callback_data="stats_callback",
             ),
             InlineKeyboardButton(
-                text="Support 👨", url="http://t.me/WBBSupport"
+                text="Support 👨", url="t.me/Friends_Group_Chatting"
             ),
         ],
         [
@@ -121,7 +121,7 @@ async def help_command(_, message):
                     ),
                     InlineKeyboardButton(
                         text="Repo 🛠",
-                        url="https://github.com/thehamkercat/WilliamButcherBot",
+                        url="https://github.com/GhangaleSangram/MY_TelegramBot",
                     ),
                 ],
                 [
@@ -130,7 +130,7 @@ async def help_command(_, message):
                         callback_data="stats_callback",
                     ),
                     InlineKeyboardButton(
-                        text="Support 👨", url="t.me/WBBSupport"
+                        text="Support 👨", url="t.me/Friends_Group_Chatting"
                     ),
                 ],
             ]
