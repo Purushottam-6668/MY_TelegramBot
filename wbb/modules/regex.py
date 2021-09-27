@@ -1,4 +1,3 @@
-# https://github.com/PaulSonOfLars/tgbot/blob/master/tg_bot/modules/sed.py
 import re
 import sre_constants
 
