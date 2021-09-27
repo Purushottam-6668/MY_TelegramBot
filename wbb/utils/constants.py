@@ -1,5 +1,3 @@
-# New file
-
 from pyrogram.filters import command, edited
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
