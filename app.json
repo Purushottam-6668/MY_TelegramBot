@@ -1,7 +1,7 @@
 {
-    "name": "WilliamButcherBot",
+    "name": "MY_TelegramBot",
     "description": "Telegram Group Management Bot Written In Python Using Pyrogram.",
-    "repository": "https://github.com/TheHamkerCat/WilliamButcherBot",
+    "repository": "https://github.com/GhangaleSangram/MY_TelegramBot",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
     "keywords": [
     "python3",
@@ -11,7 +11,7 @@
     "telegram-bot",
     "pyrogram"
     ],
-    "repository": "https://github.com/TheHamkerCat/WilliamButcherBot",
+    "repository": "https://github.com/GhangaleSangram/MY_TelegramBot",
     "stack": "container",
     "env": {
         "BOT_TOKEN": {
