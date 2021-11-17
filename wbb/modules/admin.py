@@ -32,7 +32,7 @@ __HELP__ = """/ban - Ban A User
 /tmute - Mute A User For Specific Time
 /unmute - Unmute A User
 /ban_ghosts - Ban Deleted Accounts
-/report | @admins - Report A Message To Admins."""
+/report | @admins | @admin - Report A Message To Admins."""
 
 
 async def member_permissions(chat_id: int, user_id: int):
@@ -258,7 +258,8 @@ async def unbanFunc(_, message: Message):
             "Provide a username or reply to a user's message to unban."
         )
     await message.chat.unban_member(user)
-    await message.reply_text("Unbanned!")
+    umention = (await app.get_users(user)).mention
+    await message.reply_text(f"Unbanned! {umention}")
 
 
 # Delete messages
@@ -284,6 +285,7 @@ async def deleteFunc(_, message: Message):
 @adminsOnly("can_promote_members")
 async def promoteFunc(_, message: Message):
     user_id = await extract_user(message)
+    umention = (await app.get_users(user_id)).mention
     if not user_id:
         return await message.reply_text("I can't find that user.")
     bot = await app.get_chat_member(message.chat.id, BOT_ID)
@@ -303,7 +305,7 @@ async def promoteFunc(_, message: Message):
             can_manage_chat=bot.can_manage_chat,
             can_manage_voice_chats=bot.can_manage_voice_chats,
         )
-        return await message.reply_text("Promoted! With All Rights")
+        return await message.reply_text(f"Fully Promoted! {umention}")
 
     await message.chat.promote_member(
         user_id=user_id,
@@ -316,7 +318,7 @@ async def promoteFunc(_, message: Message):
         can_manage_chat=bot.can_manage_chat,
         can_manage_voice_chats=bot.can_manage_voice_chats,
     )
-    await message.reply_text("Promoted!")
+    await message.reply_text(f"Promoted! {umention}")
 
 
 # Demote Member
@@ -334,10 +336,6 @@ async def demote(_, message: Message):
         return await message.reply_text(
             "You wanna demote the elevated one?, RECONSIDER!"
         )
-    if user_id in (await list_admins(message.chat.id)):
-        return await message.reply_text(
-            "I can't demote an admin, You know the rules, so do i."
-        )
     await message.chat.promote_member(
         user_id=user_id,
         can_change_info=False,
@@ -349,7 +347,8 @@ async def demote(_, message: Message):
         can_manage_chat=False,
         can_manage_voice_chats=False,
     )
-    await message.reply_text("Demoted!")
+    umention = (await app.get_users(user_id)).mention
+    await message.reply_text(f"Demoted! {umention}")
 
 
 # Pin Messages
@@ -435,7 +434,8 @@ async def unmute(_, message: Message):
     if not user_id:
         return await message.reply_text("I can't find that user.")
     await message.chat.unban_member(user_id)
-    await message.reply_text("Unmuted!")
+    umention = (await app.get_users(user_id)).mention
+    await message.reply_text(f"Unmuted! {umention}")
 
 
 # Ban deleted accounts
@@ -586,18 +586,34 @@ async def check_warns(_, message: Message):
 # Report
 
 
-@app.on_message(
-    (filters.command("report") | filters.command("admins", prefixes="@"))
-    & ~filters.edited
-    & ~filters.private
-)
+@app.on_message((filters.command("report")
+                 | filters.command(["admins", "admin"], prefixes="@"))
+                & ~filters.edited
+                & ~filters.private)
 @capture_err
 async def report_user(_, message):
     if not message.reply_to_message:
-        return await message.reply_text("Reply to a message to report user.")
+        return await message.reply_text(
+          "Reply to a message to report that user."
+        )
+ 
+    if message.reply_to_message.from_user.id == message.from_user.id:
+        return await message.reply_text("Why are you reporting yourself ?")
+
     list_of_admins = await list_admins(message.chat.id)
+    if message.reply_to_message.from_user.id in list_of_admins:
+        return await message.reply_text(
+          "Do you know that the user you are replying is an admin ?"
+        )
+ 
     user_mention = message.reply_to_message.from_user.mention
-    text = f"Reported {user_mention} to admins."
-    for admin in list_of_admins:
-        text += f"[\u2063](tg://user?id={admin})"
+    text = f"Reported {user_mention} to admins!"
+    admin_data = await app.get_chat_members(chat_id=message.chat.id,
+                                            filter="administrators") # will it giv floods ?
+    for admin in admin_data:
+        if admin.user.is_bot or admin.user.is_deleted:
+            # return bots or deleted admins
+            continue
+        text += f"[\u2063](tg://user?id={admin.user.id})"
+
     await message.reply_to_message.reply_text(text)
