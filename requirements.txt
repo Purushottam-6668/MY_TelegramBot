@@ -16,7 +16,6 @@ search_engine_parser
 speedtest-cli
 TgCrypto
 uvloop
-youtube_dl
 bs4
 python-dotenv
 feedparser
