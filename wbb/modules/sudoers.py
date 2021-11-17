@@ -44,7 +44,7 @@ async def bot_sys_stats():
     disk = psutil.disk_usage("/").percent
     process = psutil.Process(os.getpid())
     stats = f"""
-{USERBOT_USERNAME}@SangramGhangale
+{USERBOT_USERNAME}@William
 ------------------
 UPTIME: {formatter.get_readable_time((bot_uptime))}
 BOT: {round(process.memory_info()[0] / 1024 ** 2)} MB
@@ -173,16 +173,15 @@ async def broadcast_message(_, message):
 
 # Update
 
-
 @app.on_message(filters.command("update") & filters.user(SUDOERS))
 async def update_restart(_, message):
     try:
-        await message.reply_text(
-            f'```{subprocess.check_output(["git", "pull"]).decode("UTF-8")}```'
-        )
+        out = subprocess.check_output(["git", "pull"]).decode("UTF-8")
+        if "Already up to date." in str(out):
+            return await message.reply_text("Its already up-to date!")
+        await message.reply_text(f"```{out}```")
     except Exception as e:
         return await message.reply_text(str(e))
     m = await message.reply_text(
-        "**Updated with default branch, restarting now.**"
-    )
+        "**Updated with default branch, restarting now.**")
     await restart(m)
