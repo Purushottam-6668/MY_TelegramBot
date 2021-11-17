@@ -1,3 +1,5 @@
+# New file
+
 from pyrogram.filters import command, edited
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
@@ -54,5 +56,7 @@ async def mkdwnhelp(_, m: Message):
             reply_markup=keyb,
         )
     else:
-        await m.reply(MARKDOWN, parse_mode="html")
+        await m.reply(
+            MARKDOWN, parse_mode="html", disable_web_page_preview=True
+        )
     return
