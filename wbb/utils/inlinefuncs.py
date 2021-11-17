@@ -43,7 +43,6 @@ keywords_list = [
     "google",
     "torrent",
     "wiki",
-    "music",
     "ytmusic",
 ]
 
