@@ -16,7 +16,7 @@ search_engine_parser
 speedtest-cli
 TgCrypto
 uvloop
-yt_dlp
+git+https://github.com/yt-dlp/yt-dlp@master
 bs4
 python-dotenv
 feedparser
